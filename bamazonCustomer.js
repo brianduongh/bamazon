@@ -13,45 +13,61 @@ const connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   console.log('connected as id ' + connection.threadId);
-  console.log('WELCOME TO BAMAZON');
+  console.log('-------------WELCOME TO BAMAZON------------');
   printInventory();
   // afterConnection();
 });
 
-
-
-
 // Prints inventory
 const printInventory = () => {
-  console.log('Printing Inventory...');
   let query = connection.query(
     'SELECT * FROM products',
     function(err,res) {
     if (err) throw err;
+    console.log(`ID\tProduct\tPrice\tStock\tDepartment`);
+    console.log(`-------------------------------------------`);
     res.forEach(product => {
-      console.log(`${product.id}\t${product.product_name}\t${product.price}\t${product.stock_quantity}`)
+      console.log(`${product.id}\t${product.product_name}\t$${product.price}\t${product.stock_quantity}\t${product.department_name}`)
     });
     purchaseItem();
   });
 };
 
+// Prompts user with questions
 const purchaseItem = () => {
   inquirer.prompt([
     {
-      type: 'input',
-      name: 'id',
-      message: 'What product id would you like to buy?'
-    },
-    {
-      type: 'input',
-      name: 'amt',
-      message: 'How much would you like to buy?'
+      type: 'confirm',
+      name: 'confirm',
+      message: 'Would you like to purchase an item?'
     }
   ]).then(function(res) {
-    updateInventory(res.id, res.amt);
+    // If user wants to purchase
+    if (res.confirm) {
+      inquirer.prompt([
+        {
+          type: 'input',
+          name: 'id',
+          message: 'What product id would you like to buy?'
+        },
+        {
+          type: 'input',
+          name: 'amt',
+          message: 'How much would you like to buy?'
+        }
+      ]).then(function(res) {
+        updateInventory(res.id, res.amt);
+      });
+    }
+    // End connection
+    else {
+      console.log("Thanks for stopping by!");
+      connection.end();
+    };
   });
 };
 
+// Update inventory in mySQL
 const updateInventory = (id, amount) => {
   let query = connection.query(
     'SELECT * FROM products WHERE ?',
@@ -88,8 +104,8 @@ const updateStock = (id, stockLeft, total) => {
     ],
     function(err) {
       if (err) throw err;
-      console.log("You have purchased an item");
-      console.log("Your total is: " + total);
+      console.log("You have purchased an item!");
+      console.log("Your total was: $" + total);
       printInventory();
     }
   );
