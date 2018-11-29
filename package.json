@@ -1,0 +1,11 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:brianduongh/bamazon.git",
+  "author": "Brian Duong <brianduongh@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^6.2.0"
+  }
+}
