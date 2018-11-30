@@ -96,6 +96,7 @@ const addInventory = () => {
   });
 };
 
+// Adds to stock
 const addStock = (stockQuantity, product, amount) => {
   connection.query('UPDATE products SET ? WHERE ?;',
   [
@@ -116,6 +117,7 @@ You added ${amount} more to ${product}!
   })
 }
 
+// Create a new product
 const newProduct = () => {
   inquirer.prompt([
     {
