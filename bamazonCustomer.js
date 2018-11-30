@@ -1,6 +1,7 @@
 // Connect to mysql database
 const mysql = require('mysql');
 const inquirer = require('inquirer');
+const chalk = require('chalk');
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -13,7 +14,7 @@ const connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   console.log('connected as id ' + connection.threadId);
-  console.log('-------------WELCOME TO BAMAZON------------');
+  console.log(chalk.cyanBright('-------------WELCOME TO BAMAZON------------'));
   printInventory();
   // afterConnection();
 });
@@ -24,10 +25,10 @@ const printInventory = () => {
     'SELECT * FROM products',
     function(err,res) {
     if (err) throw err;
-    console.log(`ID\tProduct\tPrice\tStock\tDepartment`);
-    console.log(`-------------------------------------------`);
+    console.log(chalk.cyanBright(`ID\tProduct\tPrice\tStock\tDepartment`));
+    console.log(chalk.cyanBright(`-------------------------------------------`));
     res.forEach(product => {
-      console.log(`${product.id}\t${product.product_name}\t$${product.price}\t${product.stock_quantity}\t${product.department_name}`)
+      console.log(`${chalk.red(product.id)}\t${chalk.yellow(product.product_name)}\t$${product.price}\t${chalk.yellow(product.stock_quantity)}\t${chalk.red(product.department_name)}`)
     });
     purchaseItem();
   });

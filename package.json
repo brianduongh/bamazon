@@ -6,6 +6,7 @@
   "author": "Brian Duong <brianduongh@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^2.4.1",
     "inquirer": "^6.2.0"
   }
 }
